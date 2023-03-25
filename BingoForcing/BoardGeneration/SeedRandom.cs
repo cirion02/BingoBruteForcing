@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace BingoForcing.BoardGeneration;
+﻿namespace BingoForcing.BoardGeneration;
 
 public class RandomListHolder
 {
