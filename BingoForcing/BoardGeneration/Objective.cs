@@ -18,10 +18,11 @@ public struct BoardObjective
         return boardObjective;
     }
 
-    public void AddBoardInfo(int id, int synergy)
+    public void AddBoardInfo(int id, int synergy, int tier)
     {
         Id = id;
         Synergy = synergy;
+        Tier = tier;
     }
     
     public bool Filled { get; set; }
@@ -29,4 +30,6 @@ public struct BoardObjective
     public string[] Types { get; set; }
     public int Id { get; set; }
     public int Synergy { get; set; }
+
+    public int Tier { get; set; }
 }

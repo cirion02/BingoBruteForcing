@@ -74,7 +74,7 @@ public class BoardGenerator
 		        BoardObjective.FromObjective(_generator[difficulty][rng % objectiveCount]);
 	        int synergy = CheckLine(i, currentObjective.Types);
 
-	        currentObjective.AddBoardInfo(rng % objectiveCount, synergy);
+	        currentObjective.AddBoardInfo(rng % objectiveCount, synergy, difficulty);
 	        BoardObjective minSynergyObjective = currentObjective;
 	        
 	        int j = 1;
@@ -86,7 +86,7 @@ public class BoardGenerator
 		        
 		        if (synergy < minSynergyObjective.Synergy)
 		        {
-			        currentObjective.AddBoardInfo((j + rng) % objectiveCount, synergy);
+			        currentObjective.AddBoardInfo((j + rng) % objectiveCount, synergy, difficulty);
 			        minSynergyObjective = currentObjective;
 		        }
 
