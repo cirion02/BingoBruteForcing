@@ -3,5 +3,6 @@
 using BingoForcing.BoardGeneration;
 using BingoForcing.DataGathering;
 using BingoForcing.GeneratorHelperFileGenerators;
+using BingoForcing.UI;
 
-ObjectiveCounts.WriteObjectiveCounts("lockout-3-1-2");
+UI.Main();

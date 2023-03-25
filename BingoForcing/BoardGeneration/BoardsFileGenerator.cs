@@ -11,7 +11,7 @@ public static class BoardsFileGenerator
 
         using StreamWriter sw = new StreamWriter(@"../../../BoardsFiles/" + filename + ".txt");
         
-        for (int i = min; i < count; i++)
+        for (int i = min; i < count + min; i++)
         {
             sw.WriteLine(StringRepresentationGenerator.BoardToString(generator.GenerateBoard(i)));
         }
