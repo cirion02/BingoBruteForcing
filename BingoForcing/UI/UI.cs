@@ -17,7 +17,7 @@ public static class UI
             done = AwaitCommand();
         }
     }
-
+    
     private static bool AwaitCommand()
     {
         Console.WriteLine("\nAwaiting command, type help for list of commands, type quit to exit program");
@@ -80,7 +80,7 @@ public static class UI
         {
             filename = arg;
         }
-        if (!File.Exists(@"../../../GeneratorJsons/" + filename + ".json"))
+        if (!File.Exists(@"GeneratorJsons/" + filename + ".json"))
         {
             Console.WriteLine($"No generator was found at GeneratorJsons/{filename}\nPlease try again");
         }
@@ -98,7 +98,7 @@ public static class UI
             Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
             return;
         }
-        if (File.Exists(@"../../../BoardsFiles/" + _currentFilename + ".txt"))
+        if (File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
         {
             Console.WriteLine($"Boards for {_currentFilename} have already been generated before, are you sure you want to do it again. Type Y to continue.");
             Console.Write("> ");

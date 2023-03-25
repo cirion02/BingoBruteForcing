@@ -9,7 +9,7 @@ public static class LetterToObjectiveLookup
     
     public static void CreateLetterToObjectiveJson(string filename)
     {
-        Objective[][] generator = GeneratorJsonParser.ParseJsonFile(@"../../../GeneratorJsons/" + filename + ".json");
+        Objective[][] generator = GeneratorJsonParser.ParseJsonFile(@"GeneratorJsons/" + filename + ".json");
 
         Dictionary<char, string>[] result = new Dictionary<char, string>[25];
 
@@ -24,12 +24,12 @@ public static class LetterToObjectiveLookup
 
         string json = JsonConvert.SerializeObject(result);
         
-        File.WriteAllText(@"../../../GeneratorLookups/" + filename + ".json", json);
+        File.WriteAllText(@"GeneratorLookups/" + filename + ".json", json);
     }
     
     public static Dictionary<char, string>[] ReadLetterToObjectiveJson(string filename)
     {
-        string text = File.ReadAllText(@"../../../GeneratorLookups/" + filename + ".json");
+        string text = File.ReadAllText(@"GeneratorLookups/" + filename + ".json");
         return JsonConvert.DeserializeObject<Dictionary<char, string>[]>(text) ?? Array.Empty<Dictionary<char, string>>();
     }
 }

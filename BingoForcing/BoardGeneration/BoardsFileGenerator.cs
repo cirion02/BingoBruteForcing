@@ -9,7 +9,7 @@ public static class BoardsFileGenerator
         Objective[][] generatorJson = GeneratorJsonParser.ParseJsonFile(filename);
         BoardGenerator generator = new BoardGenerator(generatorJson);
 
-        using StreamWriter sw = new StreamWriter(@"../../../BoardsFiles/" + filename + ".txt");
+        using StreamWriter sw = new StreamWriter(@"BoardsFiles/" + filename + ".txt");
         
         for (int i = min; i < count + min; i++)
         {

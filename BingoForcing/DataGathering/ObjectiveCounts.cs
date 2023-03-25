@@ -31,7 +31,7 @@ public static class ObjectiveCounts
             counts[i] = new int[14];
         }
 
-        using StreamReader sr = new StreamReader(@"../../../BoardsFiles/" + filename + ".txt");
+        using StreamReader sr = new StreamReader(@"BoardsFiles/" + filename + ".txt");
         
         string? line;
         while ((line = sr.ReadLine()) != null)
@@ -51,7 +51,7 @@ public static class ObjectiveCounts
 
         Objective[][] objectives = GeneratorJsonParser.ParseJsonFile(filename);
         
-        using StreamWriter sw = new StreamWriter(@"../../../Output/ObjectiveCounts/" + filename + ".txt");
+        using StreamWriter sw = new StreamWriter(@"Output/ObjectiveCounts/" + filename + ".txt");
         
         for (int i = 0; i < 25; i++)
         {
