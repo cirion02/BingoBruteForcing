@@ -2,12 +2,6 @@
 
 public class Objective
 {
-    public string Name;
-    public string[] Tags;
-
-    public Objective(string name, string[] tags)
-    {
-        Name = name;
-        Tags = tags
-    }
+    public string Name { get; set; }
+    public string[] Types { get; set; }
 }
