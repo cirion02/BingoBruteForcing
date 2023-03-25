@@ -57,6 +57,7 @@ public class BoardGenerator
         Types = null 
         */
         
+        PrecalcDifficultyValues(seed);
         
         for (int i = 0; i < 25; i++)
         {
