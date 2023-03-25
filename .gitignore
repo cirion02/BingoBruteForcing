@@ -5,3 +5,4 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 BingoForcing/BoardsFiles/*.txt
+BingoForcing/Output/*/*.txt
