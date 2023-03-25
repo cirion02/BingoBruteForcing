@@ -78,7 +78,7 @@ public class BoardGenerator
 	        BoardObjective minSynergyObjective = currentObjective;
 	        
 	        int j = 1;
-	        do
+	        while ((synergy != 0) && (j < objectiveCount))
 	        {
 		        currentObjective =
 			        BoardObjective.FromObjective(_generator[difficulty][(j + rng) % objectiveCount]);
@@ -91,7 +91,7 @@ public class BoardGenerator
 		        }
 
 		        j++;
-	        } while ((synergy != 0) && (j < objectiveCount));
+	        } 
 
 	        _currentBoard[i] = minSynergyObjective;
         }
