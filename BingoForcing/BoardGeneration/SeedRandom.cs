@@ -97,6 +97,8 @@ public class SeedRandom
         while (c < 4503599627370496)
         {
             c = (c + b) * 256;
+            // this desyncs with native nodejs code, since nodejs has a rounding error,
+            // it however does not seem to actually effect the outcome of the function
             d *= 256;
             b = _randomListHolder.GenerateRandomNum(1);
         }
