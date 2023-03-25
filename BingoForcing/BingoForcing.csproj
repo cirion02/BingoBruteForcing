@@ -10,6 +10,7 @@
     <ItemGroup>
       <Folder Include="GeneratorJsons" />
       <Folder Include="GeneratorLookups" />
+      <Folder Include="Output\ObjectiveCounts" />
     </ItemGroup>
 
     <ItemGroup>
