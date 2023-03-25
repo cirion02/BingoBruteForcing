@@ -1,4 +1,6 @@
-﻿namespace BingoForcing.BoardGeneration;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace BingoForcing.BoardGeneration;
 
 public static class BoardsFileGenerator
 {
