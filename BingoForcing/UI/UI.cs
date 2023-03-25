@@ -1,4 +1,5 @@
 ﻿using BingoForcing.BoardGeneration;
+using BingoForcing.DataGathering;
 
 namespace BingoForcing.UI;
 
@@ -47,6 +48,9 @@ public static class UI
             case "genboards": 
                 GenBoards();
                 return false;
+            case "objectivecounts":
+                GenObjectiveCounts();
+                return false;
             default:
                 Console.WriteLine("Unknown command, type help for list of commands.");
                 return false;
@@ -58,8 +62,9 @@ public static class UI
         Console.WriteLine("Help: Shows this list");
         Console.WriteLine("Quit: Quits the application");
         Console.WriteLine("SetFileName: Sets the file name of the files that will be read and written too,\n" +
-                          "changing this between commands could have unintended consequences.");
-        Console.WriteLine("GenBoards: Generates the list of boards with the current gen (This takes long)");
+                          "changing this between commands could have unintended consequences");
+        Console.WriteLine("GenBoards: Generates the list of boards with the current gen");
+        Console.WriteLine("ObjectiveCounts: Writes how many times each objective shows up into the output folder");
     }
     
     private static void Quit()
@@ -111,5 +116,25 @@ public static class UI
             Console.WriteLine("Continuing");
         }
         BoardsFileGenerator.WriteBoardsToFile(_currentFilename, 1000000);
+    }
+    
+    private static void GenObjectiveCounts()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        ObjectiveCounts.WriteObjectiveCounts(_currentFilename);
     }
 }
