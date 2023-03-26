@@ -9,7 +9,7 @@ public static class UI
     
     public static void Main()
     {
-        Console.WriteLine("Bingo Brute Force v1.idk by Cirion02\n");
+        Console.WriteLine("Bingo Brute Force v0.1 by Cirion02\n");
 
         bool done = false;
 
@@ -51,6 +51,9 @@ public static class UI
             case "objectivecounts":
                 GenObjectiveCounts();
                 return false;
+            case "generatorhelp":
+                GeneratorHelp();
+                return false;
             default:
                 Console.WriteLine("Unknown command, type help for list of commands.");
                 return false;
@@ -60,6 +63,7 @@ public static class UI
     private static void Help()
     {
         Console.WriteLine("Help: Shows this list");
+        Console.WriteLine("GeneratorHelp: Explains how to add your own generators to the program");
         Console.WriteLine("Quit: Quits the application");
         Console.WriteLine("SetFileName: Sets the file name of the files that will be read and written too,\n" +
                           "changing this between commands could have unintended consequences");
@@ -136,5 +140,11 @@ public static class UI
             return;
         }
         ObjectiveCounts.WriteObjectiveCounts(_currentFilename);
+    }
+
+    private static void GeneratorHelp()
+    {
+        Console.WriteLine("To add your own generator, put the json file into the GeneratorJsons folder.\n" +
+                          "From there you can read it in this terminal by using SetFileName.");
     }
 }
