@@ -2,7 +2,7 @@
 
 using BingoForcing.BoardGeneration;
 using BingoForcing.DataGathering;
-using BingoForcing.GeneratorHelperFileGenerators;
+using BingoForcing.Helpers;
 using BingoForcing.UI;
 
 UI.Main();

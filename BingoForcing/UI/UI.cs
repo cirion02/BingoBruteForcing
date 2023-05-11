@@ -9,7 +9,7 @@ public static class UI
     
     public static void Main()
     {
-        Console.WriteLine("Bingo Brute Force v0.1 by Cirion02\n");
+        Console.WriteLine("Bingo Brute Force v0.2 by Cirion02\n");
 
         bool done = false;
 
@@ -54,6 +54,12 @@ public static class UI
             case "generatorhelp":
                 GeneratorHelp();
                 return false;
+            case "objectivesfromlist":
+                GenObjectivesFromList();
+                return false;
+            case "test":
+                ObjectiveFromListOnBoardCount.GetObjectiveFromListOnBoardCount("lockout-3-1-2", "3A-objectives");
+                return false;
             default:
                 Console.WriteLine("Unknown command, type help for list of commands.");
                 return false;
@@ -69,6 +75,8 @@ public static class UI
                           "changing this between commands could have unintended consequences");
         Console.WriteLine("GenBoards: Generates the list of boards with the current gen");
         Console.WriteLine("ObjectiveCounts: Writes how many times each objective shows up into the output folder");
+        Console.WriteLine("ObjectivesFromList: Takes a lot of objective names, generates a list of how many boards\n" +
+                          "have a specific amount of those objectives.");
     }
     
     private static void Quit()
@@ -140,6 +148,34 @@ public static class UI
             return;
         }
         ObjectiveCounts.WriteObjectiveCounts(_currentFilename);
+    }
+    
+    private static void GenObjectivesFromList()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        Console.WriteLine($"What's the filename for the list of objective names");
+        Console.Write("> ");
+        string input = (Console.ReadLine() ?? "").ToLower();
+        if (!File.Exists(@"Input/ObjectiveLists/" + input + ".txt"))
+        {
+            Console.WriteLine($"No file named {input} found in Input/ObjectiveLists, try again");
+            return;
+        }
+        ObjectiveFromListOnBoardCount.WriteObjectiveFromListOnBoardCount(_currentFilename, input);
     }
 
     private static void GeneratorHelp()
