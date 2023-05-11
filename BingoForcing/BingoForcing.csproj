@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <Folder Include="GeneratorLookups" />
-      <Folder Include="Output\ObjectiveFromListOnBoardCount" />
     </ItemGroup>
 
     <ItemGroup>
