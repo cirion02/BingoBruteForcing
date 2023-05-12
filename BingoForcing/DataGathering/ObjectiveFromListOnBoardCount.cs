@@ -77,11 +77,11 @@ public static class ObjectiveFromListOnBoardCount
             }
         }
         
-        using StreamWriter sw = new StreamWriter(@"Output/ObjectiveFromListOnBoardCount/" + filename + ".txt");
+        using StreamWriter sw = new StreamWriter(@"Output/ObjectiveFromListOnBoardCount/" + filename + "-" + objectiveListFilename + ".txt");
         
         sw.WriteLine("Objective Counts:");
         
-        for (int i = 0; i < highestValue; i++)
+        for (int i = 0; i <= highestValue; i++)
         {
             sw.WriteLine($"{i}: {result[i]}");
         }

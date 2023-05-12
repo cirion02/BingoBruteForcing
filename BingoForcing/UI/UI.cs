@@ -1,4 +1,5 @@
-﻿using BingoForcing.BoardGeneration;
+﻿using System.Diagnostics.CodeAnalysis;
+using BingoForcing.BoardGeneration;
 using BingoForcing.DataGathering;
 
 namespace BingoForcing.UI;
@@ -18,7 +19,8 @@ public static class UI
             done = AwaitCommand();
         }
     }
-    
+        
+    [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
     private static bool AwaitCommand()
     {
         Console.WriteLine("\nAwaiting command, type help for list of commands, type quit to exit program");
@@ -57,6 +59,9 @@ public static class UI
             case "objectivesfromlist":
                 GenObjectivesFromList();
                 return false;
+            case "objectivesperchapter":
+                GenObjectivePerChapter();
+                return false;
             case "test":
                 ObjectiveFromListOnBoardCount.GetObjectiveFromListOnBoardCount("lockout-3-1-2", "3A-objectives");
                 return false;
@@ -77,6 +82,8 @@ public static class UI
         Console.WriteLine("ObjectiveCounts: Writes how many times each objective shows up into the output folder");
         Console.WriteLine("ObjectivesFromList: Takes a lot of objective names, generates a list of how many boards\n" +
                           "have a specific amount of those objectives.");
+        Console.WriteLine("ObjectivesPerChapter: Makes a list of how many times each pair of chapters shows up on boards.\n" +
+                          "Also calculates what the highest two chapter synergy on each board.");
     }
     
     private static void Quit()
@@ -176,6 +183,26 @@ public static class UI
             return;
         }
         ObjectiveFromListOnBoardCount.WriteObjectiveFromListOnBoardCount(_currentFilename, input);
+    }
+    
+    private static void GenObjectivePerChapter()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        ChapterPairObjectiveCounts.WriteObjectiveFromListOnBoardCount(_currentFilename);
     }
 
     private static void GeneratorHelp()
