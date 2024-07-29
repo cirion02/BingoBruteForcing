@@ -41,6 +41,19 @@ public class BoardGenerator
         _lineCheckList[23] = new int[] {20, 21, 22, 24, 3, 8, 13, 18};
         _lineCheckList[24] = new int[] {0, 6, 12, 18, 20, 21, 22, 23, 19, 14, 9, 4};
     }
+    
+    private Objective[] _shuffleObjectives(SeedRandom seedRandom, Objective[] toShuffle)
+    {
+	    for (int i = 0; i<toShuffle.Length; i++)
+	    {
+		    int randElement = (int) Math.Floor(seedRandom.Random() * (i+1) );
+		    Objective temp = toShuffle[i];
+		    toShuffle[i] = toShuffle[randElement];
+		    toShuffle[randElement] = temp;
+	    }
+
+	    return toShuffle;
+    }
 
     public BoardObjective[] GenerateBoard(int seed)
     {
@@ -62,7 +75,14 @@ public class BoardGenerator
         for (int i = 0; i < 25; i++)
         {
 	        int difficulty = Difficulty(i);
-	        int objectiveCount = _generator[difficulty].Length;
+
+	        Objective[] tier = _generator[difficulty];
+
+	        
+	        // Comment this out for slr_v5
+	        tier = _shuffleObjectives(seedRandom, tier);
+	        
+	        int objectiveCount = tier.Length;
 	        int rng = (int)Math.Floor(objectiveCount * seedRandom.Random());
 	        if (rng == objectiveCount)
 	        {
@@ -71,7 +91,7 @@ public class BoardGenerator
 	        }
 
 	        BoardObjective currentObjective =
-		        BoardObjective.FromObjective(_generator[difficulty][rng % objectiveCount]);
+		        BoardObjective.FromObjective(tier[rng % objectiveCount]);
 	        int synergy = CheckLine(i, currentObjective.Types);
 
 	        currentObjective.AddBoardInfo(rng % objectiveCount, synergy, difficulty);
@@ -81,7 +101,7 @@ public class BoardGenerator
 	        while ((synergy != 0) && (j < objectiveCount))
 	        {
 		        currentObjective =
-			        BoardObjective.FromObjective(_generator[difficulty][(j + rng) % objectiveCount]);
+			        BoardObjective.FromObjective(tier[(j + rng) % objectiveCount]);
 		        synergy = CheckLine(i, currentObjective.Types);
 		        
 		        if (synergy < minSynergyObjective.Synergy)
@@ -116,6 +136,8 @@ public class BoardGenerator
 			    {
 				    if (typesA[k] != typesB[l]) continue;
 				    synergy++;
+				    
+				    /* Uncomment this for slr v5 behavoir 
 				    if (k == 0)
 				    {
 					    synergy++;
@@ -124,6 +146,7 @@ public class BoardGenerator
 				    {
 					    synergy++;
 				    };
+				    */
 			    }
 		    }
 	    }
