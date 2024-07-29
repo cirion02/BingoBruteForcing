@@ -9,7 +9,10 @@
 
     <ItemGroup>
       <Folder Include="GeneratorLookups" />
+      <Folder Include="Output\BoardFromObjectives" />
+      <Folder Include="Output\FilteredCounts" />
       <Folder Include="Output\ObjectivesPerChapter" />
+      <Folder Include="Output\Routes" />
     </ItemGroup>
 
     <ItemGroup>

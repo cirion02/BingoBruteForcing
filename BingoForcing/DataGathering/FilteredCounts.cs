@@ -2,7 +2,7 @@
 
 namespace BingoForcing.DataGathering;
 
-public static class ObjectiveFromListOnBoardCount
+public class FilteredCounts
 {
     private static (int, char) LookForLetter(Dictionary<string, char>[] objectiveLookup, string objectiveName)
     {
@@ -16,7 +16,7 @@ public static class ObjectiveFromListOnBoardCount
         throw new ArgumentException($"Objective {objectiveName} does not appear in the given generator.");
     }
     
-    private static HashSet<char>[] GetObjectiveLetterLookup(string filename, string objectiveListFilename)
+    private static (int, char, HashSet<char>[]) GetObjectiveLetterLookupAndFilter(string filename, string objectiveListFilename)
     {
         Dictionary<string, char>[] objectiveLookup = LetterObjectiveLookup.ReadObjectiveToLetterJson(filename);
 
@@ -27,21 +27,28 @@ public static class ObjectiveFromListOnBoardCount
             result[i] = new HashSet<char>();
         }
         
-        using StreamReader sr = new StreamReader(@"Input/ObjectiveLists/" + objectiveListFilename + ".txt");
+        using StreamReader sr = new StreamReader(@"Input/FilteredCounts/" + objectiveListFilename + ".txt");
         
         string? line;
+
+        line = sr.ReadLine();
+        
+        (int filterId, char filter) = LookForLetter(objectiveLookup, line.Trim(' '));
+        
+        line = sr.ReadLine();
+        
         while ((line = sr.ReadLine()) != null)
         {
             (int i, char value) = LookForLetter(objectiveLookup, line.Trim(' '));
             result[i].Add(value);
         }
 
-        return result;
+        return (filterId, filter, result);
     }
     
     public static int[] GetObjectiveFromListOnBoardCount(string filename, string objectiveListFilename)
     {
-        HashSet<char>[] lookup = GetObjectiveLetterLookup(filename, objectiveListFilename);
+        (int filterId, char filter, HashSet<char>[] lookup) = GetObjectiveLetterLookupAndFilter(filename, objectiveListFilename);
 
         using StreamReader sr = new StreamReader(@"BoardsFiles/" + filename + ".txt");
         
@@ -52,13 +59,15 @@ public static class ObjectiveFromListOnBoardCount
         string? line;
         while ((line = sr.ReadLine()) != null)
         {
+            if (line[filterId] != filter) continue;
+
             int temp = 0;
             for (int i = 0; i < 25; i++)
             {
                 if (lookup[i].Contains(line[i])) temp++;
             }
             
-            if (temp == 8) Console.WriteLine(seedNum);
+            if (temp == 4) Console.WriteLine(seedNum);
 
             result[temp]++;
 
@@ -68,7 +77,7 @@ public static class ObjectiveFromListOnBoardCount
         return result;
     }
     
-    public static void WriteObjectiveFromListOnBoardCount(string filename, string objectiveListFilename)
+    public static void WriteFilteredCounts(string filename, string objectiveListFilename)
     {
         int[] result = GetObjectiveFromListOnBoardCount(filename, objectiveListFilename);
 
@@ -83,7 +92,7 @@ public static class ObjectiveFromListOnBoardCount
             }
         }
         
-        using StreamWriter sw = new StreamWriter(@"Output/ObjectiveFromListOnBoardCount/" + filename + "-" + objectiveListFilename + ".txt");
+        using StreamWriter sw = new StreamWriter(@"Output/FilteredCounts/" + filename + "-" + objectiveListFilename + ".txt");
         
         sw.WriteLine("Objective Counts:");
         

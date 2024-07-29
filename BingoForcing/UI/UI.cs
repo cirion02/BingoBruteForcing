@@ -62,8 +62,14 @@ public static class UI
             case "objectivesperchapter":
                 GenObjectivePerChapter();
                 return false;
-            case "test":
-                ObjectiveFromListOnBoardCount.GetObjectiveFromListOnBoardCount("lockout-3-1-2", "3A-objectives");
+            case "routedominance":
+                GenRouteDominanceData();
+                return false;
+            case "findboards":
+                FindBoardFromObjectives();
+                return false;
+            case "filteredcounts":
+                GenFilteredCounts();
                 return false;
             default:
                 Console.WriteLine("Unknown command, type help for list of commands.");
@@ -84,6 +90,9 @@ public static class UI
                           "have a specific amount of those objectives.");
         Console.WriteLine("ObjectivesPerChapter: Makes a list of how many times each pair of chapters shows up on boards.\n" +
                           "Also calculates what the highest two chapter synergy on each board.");
+        Console.WriteLine("RouteDominance: Generates data on how often a given route is dominant over others.");
+        Console.WriteLine("FindBoards: Finds the board containing a specific set of objectives.");
+        Console.WriteLine("FilteredCounts: Checks how often a list of objectives appears alongside a specific objective.");
     }
     
     private static void Quit()
@@ -185,6 +194,34 @@ public static class UI
         ObjectiveFromListOnBoardCount.WriteObjectiveFromListOnBoardCount(_currentFilename, input);
     }
     
+    private static void FindBoardFromObjectives()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        Console.WriteLine($"What's the filename for the list of objective names");
+        Console.Write("> ");
+        string input = (Console.ReadLine() ?? "").ToLower();
+        if (!File.Exists(@"Input/ObjectivesFromBoard/" + input + ".txt"))
+        {
+            Console.WriteLine($"No file named {input} found in Input/ObjectivesFromBoard, try again");
+            return;
+        }
+        FindBoardsFromObjectives.WriteBoardsFromObjectives(_currentFilename, input);
+    }
+    
     private static void GenObjectivePerChapter()
     {
         if (_currentFilename == null)
@@ -209,5 +246,61 @@ public static class UI
     {
         Console.WriteLine("To add your own generator, put the json file into the GeneratorJsons folder.\n" +
                           "From there you can read it in this terminal by using SetFileName.");
+    }
+    
+    private static void GenRouteDominanceData()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        Console.WriteLine($"What's the filename for the routes");
+        Console.Write("> ");
+        string input = (Console.ReadLine() ?? "").ToLower();
+        if (!File.Exists(@"Input/Routes/" + input + ".txt"))
+        {
+            Console.WriteLine($"No file named {input} found in Input/Routes, try again");
+            return;
+        }
+        RouteDominanceCalculations.WriteObjectiveCounts(_currentFilename, input);
+    }
+    
+    private static void GenFilteredCounts()
+    {
+        if (_currentFilename == null)
+        {
+            Console.WriteLine("No filename is currently selected, set use using SetFileName and then try again.");
+            return;
+        }
+        if (!File.Exists(@"BoardsFiles/" + _currentFilename + ".txt"))
+        {
+            Console.WriteLine($"Boards for {_currentFilename} don't exist, create them and try again.");
+            return;
+        }
+        if (!File.Exists(@"GeneratorJsons/" + _currentFilename + ".json"))
+        {
+            Console.WriteLine($"Generator for {_currentFilename} don't exist, create it and try again.");
+            return;
+        }
+        Console.WriteLine($"What's the filename for the routes");
+        Console.Write("> ");
+        string input = (Console.ReadLine() ?? "").ToLower();
+        if (!File.Exists(@"Input/FilteredCounts/" + input + ".txt"))
+        {
+            Console.WriteLine($"No file named {input} found in Input/FilteredCounts, try again");
+            return;
+        }
+        FilteredCounts.WriteFilteredCounts(_currentFilename, input);
     }
 }
