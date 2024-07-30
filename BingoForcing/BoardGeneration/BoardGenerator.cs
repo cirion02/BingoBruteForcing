@@ -42,12 +42,12 @@ public class BoardGenerator
         _lineCheckList[24] = new int[] {0, 6, 12, 18, 20, 21, 22, 23, 19, 14, 9, 4};
     }
     
-    private Objective[] _shuffleObjectives(SeedRandom seedRandom, Objective[] toShuffle)
+    private IdObjective[] _shuffleObjectives(SeedRandom seedRandom, IdObjective[] toShuffle)
     {
 	    for (int i = 0; i<toShuffle.Length; i++)
 	    {
 		    int randElement = (int) Math.Floor(seedRandom.Random() * (i+1) );
-		    Objective temp = toShuffle[i];
+		    IdObjective temp = toShuffle[i];
 		    toShuffle[i] = toShuffle[randElement];
 		    toShuffle[randElement] = temp;
 	    }
@@ -57,6 +57,18 @@ public class BoardGenerator
 
     public BoardObjective[] GenerateBoard(int seed)
     {
+        IdObjective[][] idGenerator = new IdObjective[25][];
+
+        for (int i = 0; i < 25; i++)
+        {
+          IdObjective[] idTier = new IdObjective[_generator[i].Length];
+          for (int j = 0; j < _generator[i].Length; j++)
+          {
+            idTier[j] = IdObjective.FromObjective(_generator[i][j], j);
+          }
+          idGenerator[i] = idTier;
+        }
+
         string stringSeed = seed.ToString();
         SeedRandom seedRandom = new SeedRandom(stringSeed);
 
@@ -76,7 +88,7 @@ public class BoardGenerator
         {
 	        int difficulty = Difficulty(i);
 
-	        Objective[] tier = _generator[difficulty];
+	        IdObjective[] tier = idGenerator[difficulty];
 
 	        
 	        // Comment this out for slr_v5
@@ -91,22 +103,22 @@ public class BoardGenerator
 	        }
 
 	        BoardObjective currentObjective =
-		        BoardObjective.FromObjective(tier[rng % objectiveCount]);
+		        BoardObjective.FromIdObjective(tier[rng % objectiveCount]);
 	        int synergy = CheckLine(i, currentObjective.Types);
 
-	        currentObjective.AddBoardInfo(rng % objectiveCount, synergy, difficulty);
+	        currentObjective.AddBoardInfo(synergy, difficulty);
 	        BoardObjective minSynergyObjective = currentObjective;
 	        
 	        int j = 1;
 	        while ((synergy != 0) && (j < objectiveCount))
 	        {
 		        currentObjective =
-			        BoardObjective.FromObjective(tier[(j + rng) % objectiveCount]);
+			        BoardObjective.FromIdObjective(tier[(j + rng) % objectiveCount]);
 		        synergy = CheckLine(i, currentObjective.Types);
 		        
 		        if (synergy < minSynergyObjective.Synergy)
 		        {
-			        currentObjective.AddBoardInfo((j + rng) % objectiveCount, synergy, difficulty);
+			        currentObjective.AddBoardInfo(synergy, difficulty);
 			        minSynergyObjective = currentObjective;
 		        }
 
